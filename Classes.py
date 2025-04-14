@@ -1,5 +1,9 @@
 import math
 class TicTacToe:
+  '''
+  Makes a 3 by 3 board on which the game will be played on
+  A space with value 0 is unclaimed, marked with 1 is for player 1, and 2 for player 2
+  '''
   def __init__(self):
     self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]] #creates 3 by 3 empty board
   
@@ -8,12 +12,12 @@ class TicTacToe:
 
   def addValue(self, xPos: int, yPos: int, playerNum):
     if self.board[xPos][yPos] != 0: #checks if the square has already been claimed
-      print("Square has already been claimed")
+      print("Square has already been claimed, try again!")
     else:
       self.board[xPos][yPos] = playerNum #square is claimed by player
 
   #functions is to make checking for wins easy
-  def checkValuesForWin(self, val1: int, val2: int, val3: int):
+  def __checkValuesForWin(self, val1: int, val2: int, val3: int): #double underscore before the name to make it hard to call this function outside of this class defintion
     return val1 == val2 == val3 and val1 != 0
   
   def checkForWin(self):
