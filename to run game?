@@ -1,0 +1,36 @@
+def play_game():
+    game = TicTacToe()
+    current_player = 1
+
+    while True:
+        game.printBoard()
+        print(f"Player {current_player}'s turn (X if 1, O if 2).")
+
+        try:
+            x = int(input("Enter row (0-2): "))
+            y = int(input("Enter column (0-2): "))
+            if x < 0 or x > 2 or y < 0 or y > 2:
+                print("Invalid input! Row and column must be between 0 and 2.")
+                continue
+        except ValueError:
+            print("Invalid input! Please enter integers.")
+            continue
+
+        if not game.addValue(x, y, current_player):
+            continue
+
+        winner = game.checkForWin()
+        if winner:
+            game.printBoard()
+            print(f"Player {winner} wins! 🎉")
+            break
+        elif game.isFull():
+            game.printBoard()
+            print("It's a tie! 🤝")
+            break
+
+        current_player = 2 if current_player == 1 else 1
+
+
+if __name__ == "__main__":
+    play_game()
