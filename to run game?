@@ -1,3 +1,50 @@
+import math
+
+class TicTacToe:
+    def __init__(self):
+        self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+    def clearBoard(self):
+        self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+    def addValue(self, xPos: int, yPos: int, playerNum):
+        if self.board[xPos][yPos] != 0:
+            print("Square has already been claimed, try again!")
+            return False
+        else:
+            self.board[xPos][yPos] = playerNum
+            return True
+
+    def __checkValuesForWin(self, val1: int, val2: int, val3: int):
+        return val1 == val2 == val3 and val1 != 0
+
+    def checkForWin(self):
+        for row in self.board:
+            if self.__checkValuesForWin(row[0], row[1], row[2]):
+                return row[0]
+
+        for col in range(3):
+            if self.__checkValuesForWin(self.board[0][col], self.board[1][col], self.board[2][col]):
+                return self.board[0][col]
+
+        if self.__checkValuesForWin(self.board[0][0], self.board[1][1], self.board[2][2]):
+            return self.board[0][0]
+        if self.__checkValuesForWin(self.board[0][2], self.board[1][1], self.board[2][0]):
+            return self.board[0][2]
+
+        return 0
+
+    def isFull(self):
+        return all(cell != 0 for row in self.board for cell in row)
+
+    def printBoard(self):
+        symbols = {0: '.', 1: 'X', 2: 'O'}
+        print("\nCurrent board:")
+        for row in self.board:
+            print(" ".join(symbols[cell] for cell in row))
+        print()
+
+
 def play_game():
     game = TicTacToe()
     current_player = 1
@@ -34,3 +81,4 @@ def play_game():
 
 if __name__ == "__main__":
     play_game()
+
