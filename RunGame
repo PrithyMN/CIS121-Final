@@ -69,11 +69,11 @@ def play_game():
         winner = game.checkForWin()
         if winner == 1 or winner == 2:
             game.printBoard()
-            print(f"Player {winner} wins! 🎉")
+            print(f"Player {winner} wins!")
             break
         elif game.isFull():
             game.printBoard()
-            print("It's a tie! 🤝")
+            print("It's a tie!")
             break
 
         if currentPlayer == 1:
