@@ -76,7 +76,10 @@ def play_game():
             print("It's a tie! 🤝")
             break
 
-        current_player = 2 if current_player == 1 else 1
+        if current_player == 1:
+            current_player = 2
+        else:
+            current_player = 1
 
 
 if __name__ == "__main__":
