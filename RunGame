@@ -54,16 +54,16 @@ def play_game():
         print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
 
         try:
-            x = int(input("Enter row (0-2): "))
-            y = int(input("Enter column (0-2): "))
-            if x < 0 or x > 2 or y < 0 or y > 2:
+            xPos = int(input("Enter row (0-2): "))
+            yPos = int(input("Enter column (0-2): "))
+            if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
                 print("Invalid input! Row and column must be between 0 and 2.")
                 continue
         except ValueError:
             print("Invalid input! Please enter integers.")
             continue
 
-        if not game.addValue(x, y, currentPlayer):
+        if not game.addValue(xPos, yPos, currentPlayer):
             continue
 
         winner = game.checkForWin()
