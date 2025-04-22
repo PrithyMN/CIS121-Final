@@ -59,9 +59,11 @@ def play_game():
             if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
                 print("Invalid input! Row and column must be between 0 and 2.")
                 continue
-            game.addValue(xPos, yPos, currentPlayer)
         except ValueError:
             print("Invalid input! Please enter integers.")
+            continue
+
+        if not game.addValue(xPos, yPos, currentPlayer):
             continue
 
         winner = game.checkForWin()
