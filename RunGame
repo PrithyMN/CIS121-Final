@@ -35,7 +35,15 @@ class TicTacToe:
         return 0
 
     def isFull(self):
-        return all(cell != 0 for row in self.board for cell in row)
+        isFull = True
+        for row in self.board:
+            for cell in row:
+                if cell == 0:
+                    isFull = False
+                    break
+            if not isFull:
+                break
+        return isFull
 
     def printBoard(self):
         symbols = {0: '.', 1: 'X', 2: 'O'}
@@ -69,11 +77,11 @@ def play_game():
         winner = game.checkForWin()
         if winner == 1 or winner == 2:
             game.printBoard()
-            print(f"Player {winner} wins! 🎉")
+            print(f"Player {winner} wins!")
             break
         elif game.isFull():
             game.printBoard()
-            print("It's a tie! 🤝")
+            print("It's a tie!")
             break
 
         if currentPlayer == 1:
