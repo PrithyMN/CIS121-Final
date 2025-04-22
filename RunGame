@@ -67,7 +67,7 @@ def play_game():
             continue
 
         winner = game.checkForWin()
-        if winner:
+        if winner == 1 or winner == 2:
             game.printBoard()
             print(f"Player {winner} wins! 🎉")
             break
