@@ -90,9 +90,11 @@ class GameMode:
                 currentPlayer = 2
             else:
                 currentPlayer = 1
+
     def playGames(self, numGames: int):
         #Add code here
         None
+        
     def playUntilWin(self):
         #code here
         None
