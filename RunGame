@@ -53,43 +53,52 @@ class TicTacToe:
         print()
 
 
-def play_game():
-    game = TicTacToe()
-    currentPlayer = 1
+class GameMode:
 
-    while True:
-        game.printBoard()
-        print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
+    def playGame(self):
+        game = TicTacToe()
+        currentPlayer = 1
 
-        try:
-            xPos = int(input("Enter row (0-2): "))
-            yPos = int(input("Enter column (0-2): "))
-            if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
-                print("Invalid input! Row and column must be between 0 and 2.")
+        while True:
+            game.printBoard()
+            print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
+
+            try:
+                xPos = int(input("Enter row (0-2): "))
+                yPos = int(input("Enter column (0-2): "))
+                if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
+                    print("Invalid input! Row and column must be between 0 and 2.")
+                    continue
+            except ValueError:
+                print("Invalid input! Please enter integers.")
                 continue
-        except ValueError:
-            print("Invalid input! Please enter integers.")
-            continue
 
-        if not game.addValue(xPos, yPos, currentPlayer):
-            continue
+            if not game.addValue(xPos, yPos, currentPlayer):
+                continue
 
-        winner = game.checkForWin()
-        if winner == 1 or winner == 2:
-            game.printBoard()
-            print(f"Player {winner} wins!")
-            break
-        elif game.isFull():
-            game.printBoard()
-            print("It's a tie!")
-            break
+            winner = game.checkForWin()
+            if winner == 1 or winner == 2:
+                game.printBoard()
+                print(f"Player {winner} wins!")
+                break
+            elif game.isFull():
+                game.printBoard()
+                print("It's a tie!")
+                break
 
-        if currentPlayer == 1:
-            currentPlayer = 2
-        else:
-            currentPlayer = 1
+            if currentPlayer == 1:
+                currentPlayer = 2
+            else:
+                currentPlayer = 1
+    def playGames(self, numGames: int):
+        #Add code here
+        None
+    def playUntilWin(self):
+        #code here
+        None
 
 
 if __name__ == "__main__":
-    play_game()
+    gamez = GameMode()
+    gamez.playGame()
 
