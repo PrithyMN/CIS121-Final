@@ -1,20 +1,18 @@
 import math
 
 class TicTacToe:
-    '''
-    Makes a 3 by 3 board on which the game will be played on
-    A space with value 0 is unclaimed, marked with 1 is for player 1, and 2 for player 2
-    '''
+    #Makes a 3 by 3 board on which the game will be played on
+    #A space with value 0 is unclaimed, marked with 1 is for player 1, and 2 for player 2
     def __init__(self):
-        self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]] #creates 3 by 3 empty board
+        self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]] #creates 3 by 3 empty board   (Data collection type #1 List)
 
-    def clearBoard(self):
-        self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]] #resets board
+    def clearBoard(self): #______THIS METHOD IS NOT USED IN THE OPERATION OF THE GAME___________
+        self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]] #resets board 
 
     def addValue(self, xPos: int, yPos: int, playerNum):
         if self.board[xPos][yPos] != 0: #checks if the square has already been claimed
             print("Square has already been claimed, try again!")
-            return False #allows player to reselect square when playing a game
+            return False #allows player to reselect square when playing a game        (Data type#2 Boolean (T/F)
         else:
             self.board[xPos][yPos] = playerNum #square is claimed by player
             return True
@@ -43,8 +41,8 @@ class TicTacToe:
     def isFull(self):
         isFull = True #default value to true
         for row in self.board: #checks all squares for value of 0, which would indicate that the board is not full
-            for cell in row:
-                if cell == 0:
+            for cell in row: #Nested Loop
+                if cell == 0: #Selection Statement
                     isFull = False
                     break
             if not isFull: #second break so the loop does not continue unnecisarilly
@@ -80,7 +78,7 @@ class GameMode:
                 continue
 
             if not game.addValue(xPos, yPos, currentPlayer): #adds the player input to the board. if the square already has a value, the player is told to retry
-                continue
+                continue #(Data Collection Type #3 Tuple^)
 
             winner = game.checkForWin()
             if winner == 1 or winner == 2:
@@ -88,7 +86,7 @@ class GameMode:
                 print(f"Player {winner} wins!")
                 break
             elif game.isFull():
-                game.printBoard()
+                game.printBoard() #calling printBorard function to show the game board
                 print("It's a tie!")
                 break
 
@@ -107,5 +105,6 @@ class GameMode:
 
 if __name__ == "__main__":
     gamez = GameMode()
-    gamez.playGame()
+    gamez.playGame()#Calling the playGame function
 
+#I/O File Section: This code does not take data from a file nor does it save to another file.
