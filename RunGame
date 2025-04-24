@@ -106,7 +106,7 @@ class GameMode:
         game = TicTacToe()
         game.clearBoard()
         currentPlayer = 1
-        userFile = open("TicTacToe.txt", "r+")
+        userFile = open("TicTacToe.txt", "r+") #r+ so it does not delete contents of file
 
         while True:
             userFile.seek(0)
@@ -167,6 +167,15 @@ class GameMode:
             currentPlayer += 1
             if currentPlayer >= 3: #eliminates possible weirdness if value is over 3 (but gives player 1 and advantage :)
                 currentPlayer = 1
+                
+        userFile.seek(0)
+        for curLine in range(startLine):
+            userFile.readline()
+        userFile.seek(userFile.tell())
+
+        userFile.write("Current board:\n")
+        for row in game.returnBoard():
+            userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
 
     def playGames(self, numGames: int):
         #Add code here
