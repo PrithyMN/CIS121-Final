@@ -1,4 +1,5 @@
 import math
+import time
 
 class TicTacToe:
     #Makes a 3 by 3 board on which the game will be played on
@@ -63,6 +64,7 @@ class TicTacToe:
 class GameMode:
 
     symbols = {0: '.', 1: 'X', 2: 'O'} #creates dictionary to convert board values to prinable icons (0, 1, 2 -> ., X, O)
+    waitTime = 4
 
     def playGame(self):
         game = TicTacToe()
@@ -116,31 +118,49 @@ class GameMode:
             for row in game.returnBoard():
                 userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
             
-            userFile.write(f"Player {self.symbols[currentPlayer]}'s.\n")
-            break
+            userFile.write(f"Player {self.symbols[currentPlayer]}'s turn.\n")
+            userFile.write('Enter your move: ')
+            cursorPos = userFile.tell()
 
-            try: #try statement for proper and improper inputs
-                xPos = int(input("Enter row (0-2): "))
-                yPos = int(input("Enter column (0-2): "))
-                if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
-                    print("Invalid input! Row and column must be between 0 and 2.") #detects if input is out of range and tells player
+            while True:
+                userFile.flush()
+                userFile.seek(0, 2)
+                userFile.seek(userFile.tell() - 1)
+                if userFile.read(1) == '\n':
+                    break
+                time.sleep(0.1)
+            try:
+                userFile.seek(0, 2)
+                userFile.seek(userFile.tell() - 4)
+                xPos = int(userFile.read(1))
+                yPos = int(userFile.read(1))
+                if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2: #detects if input is out of range and tells player
+                    userFile.seek(0, 2)
+                    userFile.write("Invalid input! Row and column must be between 0 and 2.")
+                    userFile.flush()
+                    time.sleep(self.waitTime)
                     continue
             except ValueError:
-                print("Invalid input! Please enter integers.")
+                userFile.seek(0, 2)
+                userFile.write("Invalid input! Please enter integers.")
+                userFile.flush()
+                time.sleep(self.waitTime)
                 continue
 
             if not game.addValue(xPos, yPos, currentPlayer): #adds the player input to the board. if the square already has a value, the player is told to retry
-                print("Square has already been claimed, try again!")
+                userFile.write("Square has already been claimed, try again!")
+                userFile.flush()
+                time.sleep(self.waitTime)
                 continue #(Data Collection Type #3 Tuple^)
 
             winner = game.checkForWin()
             if winner == 1 or winner == 2:
                 game.printBoard()
-                print(f"Player {winner} wins!")
+                userFile.write(f"Player {self.symbols[currentPlayer]} wins!")
                 break
             elif game.isFull():
                 game.printBoard() #calling printBorard function to show the game board
-                print("It's a tie!")
+                userFile.write("It's a tie!")
                 break
 
             currentPlayer += 1
@@ -158,7 +178,7 @@ class GameMode:
 
 if __name__ == "__main__":
     gamez = GameMode()
-    gamez.playGameOntoFile(3)
+    gamez.playGameOntoFile(0)
     #gamez.playGame()#Calling the playGame function
 
 #I/O File Section: This code does not take data from a file nor does it save to another file.
