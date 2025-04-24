@@ -101,14 +101,12 @@ class GameMode:
     def playGameOntoFile(self, startLine: int):
         game = TicTacToe()
         currentPlayer = 1
-        file = open("TicTacToe.txt", "w+")
-        file.write('hi')
+        userFile = open("TicTacToe.txt", "w+")
 
         while True:
-            file.seek(0)
-            for curLine in range(startLine):
-                file.readline
-            file.write('hi')
+            userFile.seek(0)
+            userFile.readlines()[:startLine]
+            userFile.write('hi')
 
             game.printBoard()
             print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
@@ -152,7 +150,7 @@ class GameMode:
 
 if __name__ == "__main__":
     gamez = GameMode()
-    gamez.playGameOntoFile(1)
-    gamez.playGame()#Calling the playGame function
+    gamez.playGameOntoFile(3)
+    #gamez.playGame()#Calling the playGame function
 
 #I/O File Section: This code does not take data from a file nor does it save to another file.
