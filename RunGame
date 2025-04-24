@@ -101,12 +101,15 @@ class GameMode:
     def playGameOntoFile(self, startLine: int):
         game = TicTacToe()
         currentPlayer = 1
-        userFile = open("TicTacToe.txt", "w+")
+        userFile = open("TicTacToe.txt", "r+")
 
         while True:
             userFile.seek(0)
-            userFile.readlines()[:startLine]
+            for curLine in range(startLine):
+                userFile.readline()
+            userFile.seek(userFile.tell())
             userFile.write('hi')
+            break
 
             game.printBoard()
             print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
