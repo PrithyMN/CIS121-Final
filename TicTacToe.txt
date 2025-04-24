@@ -1,5 +1,7 @@
-hi
-2
-3
-4
-5
+Current board:
+X O O
+. X .
+. . .
+Player X's turn.
+Enter your move: 22
+Player X wins!
