@@ -1,5 +1,5 @@
 Current board:
-X O .
+. . .
 . . .
 . . .
 Player X's turn.
