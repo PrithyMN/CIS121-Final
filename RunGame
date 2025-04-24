@@ -109,16 +109,15 @@ class GameMode:
             userFile.seek(0)
             for curLine in range(startLine):
                 userFile.readline()
-            #userFile.seek(userFile.tell())
-            #userFile.truncate()
+            userFile.seek(userFile.tell())
+            userFile.truncate()
 
             userFile.write("Current board:\n")
             for row in game.returnBoard():
                 userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
-            break
             
-            game.printBoard()
-            print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
+            userFile.write(f"Player {self.symbols[currentPlayer]}'s.\n")
+            break
 
             try: #try statement for proper and improper inputs
                 xPos = int(input("Enter row (0-2): "))
@@ -159,7 +158,7 @@ class GameMode:
 
 if __name__ == "__main__":
     gamez = GameMode()
-    gamez.playGameOntoFile(1)
+    gamez.playGameOntoFile(3)
     #gamez.playGame()#Calling the playGame function
 
 #I/O File Section: This code does not take data from a file nor does it save to another file.
