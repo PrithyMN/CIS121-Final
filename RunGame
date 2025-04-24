@@ -104,6 +104,7 @@ class GameMode:
 
     def playGameOntoFile(self, startLine: int):
         game = TicTacToe()
+        game.clearBoard()
         currentPlayer = 1
         userFile = open("TicTacToe.txt", "r+")
 
