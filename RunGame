@@ -62,6 +62,8 @@ class TicTacToe:
 
 class GameMode:
 
+    symbols = {0: '.', 1: 'X', 2: 'O'} #creates dictionary to convert board values to prinable icons (0, 1, 2 -> ., X, O)
+
     def playGame(self):
         game = TicTacToe()
         currentPlayer = 1
@@ -107,10 +109,14 @@ class GameMode:
             userFile.seek(0)
             for curLine in range(startLine):
                 userFile.readline()
-            userFile.seek(userFile.tell())
-            userFile.write('hi')
-            break
+            #userFile.seek(userFile.tell())
+            #userFile.truncate()
 
+            userFile.write("Current board:\n")
+            for row in game.returnBoard():
+                userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
+            break
+            
             game.printBoard()
             print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
 
@@ -153,7 +159,7 @@ class GameMode:
 
 if __name__ == "__main__":
     gamez = GameMode()
-    gamez.playGameOntoFile(3)
+    gamez.playGameOntoFile(1)
     #gamez.playGame()#Calling the playGame function
 
 #I/O File Section: This code does not take data from a file nor does it save to another file.
