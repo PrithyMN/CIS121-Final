@@ -11,7 +11,7 @@ class TicTacToe:
 
     def addValue(self, xPos: int, yPos: int, playerNum):
         if self.board[xPos][yPos] != 0: #checks if the square has already been claimed
-            print("Square has already been claimed, try again!")
+            #print("Square has already been claimed, try again!")
             return False #allows player to reselect square when playing a game        (Data type#2 Boolean (T/F)
         else:
             self.board[xPos][yPos] = playerNum #square is claimed by player
@@ -56,6 +56,9 @@ class TicTacToe:
             print(" ".join(symbols[cell] for cell in row))
         print('') #skips line
 
+    def returnBoard(self):
+        return self.board
+
 
 class GameMode:
 
@@ -78,6 +81,50 @@ class GameMode:
                 continue
 
             if not game.addValue(xPos, yPos, currentPlayer): #adds the player input to the board. if the square already has a value, the player is told to retry
+                print("Square has already been claimed, try again!")
+                continue #(Data Collection Type #3 Tuple^)
+
+            winner = game.checkForWin()
+            if winner == 1 or winner == 2:
+                game.printBoard()
+                print(f"Player {winner} wins!")
+                break
+            elif game.isFull():
+                game.printBoard() #calling printBorard function to show the game board
+                print("It's a tie!")
+                break
+
+            currentPlayer += 1
+            if currentPlayer >= 3: #eliminates possible weirdness if value is over 3 (but gives player 1 and advantage :)
+                currentPlayer = 1
+
+    def playGameOntoFile(self, startLine: int):
+        game = TicTacToe()
+        currentPlayer = 1
+        file = open("TicTacToe.txt", "w+")
+        file.write('hi')
+
+        while True:
+            file.seek(0)
+            for curLine in range(startLine):
+                file.readline
+            file.write('hi')
+
+            game.printBoard()
+            print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
+
+            try: #try statement for proper and improper inputs
+                xPos = int(input("Enter row (0-2): "))
+                yPos = int(input("Enter column (0-2): "))
+                if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
+                    print("Invalid input! Row and column must be between 0 and 2.") #detects if input is out of range and tells player
+                    continue
+            except ValueError:
+                print("Invalid input! Please enter integers.")
+                continue
+
+            if not game.addValue(xPos, yPos, currentPlayer): #adds the player input to the board. if the square already has a value, the player is told to retry
+                print("Square has already been claimed, try again!")
                 continue #(Data Collection Type #3 Tuple^)
 
             winner = game.checkForWin()
@@ -105,6 +152,7 @@ class GameMode:
 
 if __name__ == "__main__":
     gamez = GameMode()
+    gamez.playGameOntoFile(1)
     gamez.playGame()#Calling the playGame function
 
 #I/O File Section: This code does not take data from a file nor does it save to another file.
