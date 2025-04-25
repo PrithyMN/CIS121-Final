@@ -138,11 +138,13 @@ class GameMode:
                 if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2: #detects if input is out of range and tells player
                     userFile.seek(0, 2)
                     userFile.write("Invalid input! Row and column must be between 0 and 2.")
+                    userFile.flush()
                     time.sleep(self.waitTime) #lets user read message before moving on 
                     continue #skips rest of loop to restart process
-            except ValueError:
+            except (ValueError, SyntaxError):
                 userFile.seek(0, 2)
                 userFile.write("Invalid input! Please enter integers.")
+                userFile.flush()
                 time.sleep(self.waitTime) #lets user read message before moving on 
                 continue #skips rest of loop to restart process
 
