@@ -46,7 +46,7 @@ class TicTacToe:
                 if cell == 0: #Selection Statement
                     isFull = False
                     break
-            if not isFull: #second break so the loop does not continue unnecisarilly
+            if not isFull: #second break so the loop does not continue unnecessarily
                 break
         return isFull
 
