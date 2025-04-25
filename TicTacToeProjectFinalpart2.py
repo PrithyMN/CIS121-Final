@@ -107,12 +107,6 @@ class GameMode:
             # Switch player
             currentPlayer = 2 if currentPlayer == 1 else 1
 
-    def playGames(self, numGames: int):
-        pass
-
-    def playUntilWin(self):
-        pass
-
 
 if __name__ == "__main__":
     game = GameMode()

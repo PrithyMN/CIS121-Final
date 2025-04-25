@@ -65,7 +65,7 @@ class GameMode:
 
     symbols = {0: '.', 1: 'X', 2: 'O'} #creates dictionary to convert board values to prinable icons (0, 1, 2 -> ., X, O)
     waitTime = 4
-
+    '''
     def playGame(self):
         game = TicTacToe()
         currentPlayer = 1
@@ -101,7 +101,7 @@ class GameMode:
             currentPlayer += 1
             if currentPlayer >= 3: #eliminates possible weirdness if value is over 3 (but gives player 1 an advantage :) ?
                 currentPlayer = 1
-
+    '''
     def playGameOntoFile(self, startLine: int):
         game = TicTacToe()
         game.clearBoard()
@@ -109,82 +109,74 @@ class GameMode:
         userFile = open("TicTacToe.txt", "r+") #r+ so it does not delete contents of file but adds to them instead
 
         while True:
-            userFile.seek(0) #seek command is used to move the position of cursor within a file to specify where to rear or write data. This sets cursor to position 0.
-            for curLine in range(startLine):
+            #this block of code is meant to only start printing onto the specified line and below. This is to future proof the program
+            userFile.flush() #flush to make sure file it updated
+            userFile.seek(0) #seek command is used to move the position of cursor within a file to specify where to read or write data. This sets cursor to position 0.
+            for curLine in range(startLine): #skips to the specified start line
                 userFile.readline()
-            userFile.seek(userFile.tell()) #Tell command identifies the current position of the cursor within a file
-            userFile.truncate()
+            userFile.truncate() #deletes all data after the cursor
 
             userFile.write("Current board:\n")
-            for row in game.returnBoard():
+            for row in game.returnBoard(): #prints the board onto the file
                 userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
-            
-            userFile.write(f"Player {self.symbols[currentPlayer]}'s turn.\n")
-            userFile.write('Enter your move: ')
-            cursorPos = userFile.tell()
 
+            userFile.write(f"Player {self.symbols[currentPlayer]}'s turn.\nEnter your move: ")
+
+            #while loop to check for user inputs on the file
             while True:
-                userFile.flush()
-                userFile.seek(0, 2)
+                userFile.flush() #flush to make sure file is updated
+                userFile.seek(0, 2) #sets cursor to end of the file
                 userFile.seek(userFile.tell() - 1)
-                if userFile.read(1) == '\n':
+                if userFile.read(1) == '\n': #checks if last value is enter key
                     break
                 time.sleep(0.1)
             try:
                 userFile.seek(0, 2)
-                userFile.seek(userFile.tell() - 4)
+                userFile.seek(userFile.tell() - 4) #goes to 4 values before end of file, 4 because there is "00\r\n" for example
                 xPos = int(userFile.read(1))
                 yPos = int(userFile.read(1))
                 if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2: #detects if input is out of range and tells player
                     userFile.seek(0, 2)
                     userFile.write("Invalid input! Row and column must be between 0 and 2.")
-                    userFile.flush()
-                    time.sleep(self.waitTime)
-                    continue
+                    time.sleep(self.waitTime) #lets user read message before moving on 
+                    continue #skips rest of loop to restart process
             except ValueError:
                 userFile.seek(0, 2)
                 userFile.write("Invalid input! Please enter integers.")
-                userFile.flush()
-                time.sleep(self.waitTime)
-                continue
+                time.sleep(self.waitTime) #lets user read message before moving on 
+                continue #skips rest of loop to restart process
 
             if not game.addValue(xPos, yPos, currentPlayer): #adds the player input to the board. if the square already has a value, the player is told to retry
                 userFile.write("Square has already been claimed, try again!")
                 userFile.flush()
-                time.sleep(self.waitTime)
-                continue #(Data Collection Type #3 Tuple^)
+                time.sleep(self.waitTime) #lets user read message before moving on 
+                continue #skips rest of loop to restart process
 
-            winner = game.checkForWin()
+            #block to check and output winner
+            winner = game.checkForWin() #output is the player number who has won, or 0 if there is no winner
             if winner == 1 or winner == 2:
-                game.printBoard()
                 userFile.write(f"Player {self.symbols[currentPlayer]} wins!")
                 break
             elif game.isFull():
-                game.printBoard() #calling printBorard function to show the game board
                 userFile.write("It's a tie!")
                 break
+            #no else statement because if neither of these conditions are True, the game has not finished yet
 
             currentPlayer += 1
-            if currentPlayer >= 3: #eliminates possible weirdness if value is over 3 (but gives player 1 and advantage :)
+            if currentPlayer >= 3: #eliminates possible weirdness if value is over 3 (but gives player 1 an advantage :)
                 currentPlayer = 1
                 
+        #prints finals board after game has finished.
         userFile.seek(0)
         for curLine in range(startLine):
             userFile.readline()
         userFile.seek(userFile.tell())
-
         userFile.write("Current board:\n")
         for row in game.returnBoard():
             userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
 
-#    def playGames(self, numGames: int):
- #       None
-
-  #  def playUntilWin(self):
-   #     None
 
 
 if __name__ == "__main__":
     gamez = GameMode()
     gamez.playGameOntoFile(0)
-    #gamez.playGame()#Calling the playGame function

@@ -1,6 +1,7 @@
 Current board:
-. . .
-. . .
-. . .
+X O X
+O O X
+X X O
 Player X's turn.
-Enter your move: 
+Enter your move: 20
+It's a tie!
