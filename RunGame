@@ -1,5 +1,10 @@
 import math
 import time
+'''
+This game runs fully on the TicTacToe.txt and not the terminal. To get this to work you must save the file after you write your inputs.
+We took this approach as we wanted the inputs and the outputs on the area, instead of inputting on the terminal and then writing on the file.
+This approach came with some weirdness regarding the way file updates are handled in code, and attempting to run user inputs and the same synchronously
+'''
 
 class TicTacToe:
     #Makes a 3 by 3 board on which the game will be played on
@@ -165,7 +170,7 @@ class GameMode:
             #no else statement because if neither of these conditions are True, the game has not finished yet
 
             currentPlayer += 1
-            if currentPlayer >= 3: #eliminates possible weirdness if value is over 3 (but gives player 1 an advantage :)
+            if currentPlayer > 2: #eliminates possible weirdness if value is over 2 (but gives player 1 an advantage :)
                 currentPlayer = 1
                 
         #prints finals board after game has finished.

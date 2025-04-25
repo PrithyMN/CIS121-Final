@@ -1,6 +1,6 @@
 Current board:
-X O .
+X O X
+O X O
 . . .
-. . X
-Player O's turn.
+Player X's turn.
 Enter your move: 
