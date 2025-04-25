@@ -7,7 +7,7 @@ class TicTacToe:
     def __init__(self):
         self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]] #creates 3 by 3 empty board   (Data collection type #1 List)
 
-    def clearBoard(self): #______THIS METHOD IS NOT USED IN THE OPERATION OF THE GAME___________
+    def clearBoard(self):
         self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]] #resets board 
 
     def addValue(self, xPos: int, yPos: int, playerNum):
@@ -74,7 +74,7 @@ class GameMode:
             game.printBoard()
             print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
 
-            try: #try statement for proper and improper inputs
+            try: #try statement for proper and improper inputs. Loops until a valid input is entered.
                 xPos = int(input("Enter row (0-2): "))
                 yPos = int(input("Enter column (0-2): "))
                 if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
@@ -91,7 +91,7 @@ class GameMode:
             winner = game.checkForWin()
             if winner == 1 or winner == 2:
                 game.printBoard()
-                print(f"Player {winner} wins!")
+                print(f"Player {winner} wins!") #identifies higher value to assign winner and returns result
                 break
             elif game.isFull():
                 game.printBoard() #calling printBorard function to show the game board
@@ -99,20 +99,20 @@ class GameMode:
                 break
 
             currentPlayer += 1
-            if currentPlayer >= 3: #eliminates possible weirdness if value is over 3 (but gives player 1 and advantage :)
+            if currentPlayer >= 3: #eliminates possible weirdness if value is over 3 (but gives player 1 an advantage :) ?
                 currentPlayer = 1
 
     def playGameOntoFile(self, startLine: int):
         game = TicTacToe()
         game.clearBoard()
         currentPlayer = 1
-        userFile = open("TicTacToe.txt", "r+") #r+ so it does not delete contents of file
+        userFile = open("TicTacToe.txt", "r+") #r+ so it does not delete contents of file but adds to them instead
 
         while True:
-            userFile.seek(0)
+            userFile.seek(0) #seek command is used to move the position of cursor within a file to specify where to rear or write data. This sets cursor to position 0.
             for curLine in range(startLine):
                 userFile.readline()
-            userFile.seek(userFile.tell())
+            userFile.seek(userFile.tell()) #Tell command identifies the current position of the cursor within a file
             userFile.truncate()
 
             userFile.write("Current board:\n")
@@ -177,18 +177,14 @@ class GameMode:
         for row in game.returnBoard():
             userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
 
-    def playGames(self, numGames: int):
-        #Add code here
-        None
+#    def playGames(self, numGames: int):
+ #       None
 
-    def playUntilWin(self):
-        #code here
-        None
+  #  def playUntilWin(self):
+   #     None
 
 
 if __name__ == "__main__":
     gamez = GameMode()
     gamez.playGameOntoFile(0)
     #gamez.playGame()#Calling the playGame function
-
-#I/O File Section: This code does not take data from a file nor does it save to another file.
