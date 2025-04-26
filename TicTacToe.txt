@@ -6,7 +6,7 @@ After you have typed your input, click "Enter" and then save the file (Ctrl/Comm
 Have fun and don't cheat!
 
 Current board:
-. . .
+X O .
 . . .
 . . .
 Player X's turn.
