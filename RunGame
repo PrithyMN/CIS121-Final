@@ -124,8 +124,9 @@ class GameMode:
             userFile.seek(truncatePos)
             userFile.truncate() #deletes all data after the cursor
 
+            #prints the board onto the file
             userFile.write("Current board:\n")
-            for row in game.returnBoard(): #prints the board onto the file
+            for row in game.returnBoard():
                 userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
 
             userFile.write(f"Player {self.symbols[currentPlayer]}'s turn.\nEnter your move: ")
@@ -136,10 +137,11 @@ class GameMode:
                 time.sleep(0.1)
                 userFile.seek(0, 2) #sets cursor to end of the file
 
-                if userFile.tell() >= 1: #weird error where file will read as empty, so this checks to make sure the file has content to proceed
+                if userFile.tell() >= 1: #accounts for weird error where file will read as empty; checks to make sure the file has content to proceed
                     userFile.seek(userFile.tell() - 1)
-                    if userFile.read(1) == '\n': #checks if last value is enter key
+                    if userFile.read(1) == '\n': #checks if last value is "Enter" key
                         break
+
             try:
                 userFile.seek(0, 2)
                 userFile.seek(userFile.tell() - 4) #goes to 4 values before end of file, 4 because there is "00\r\n" for example
@@ -148,19 +150,17 @@ class GameMode:
                 if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2: #detects if input is out of range and tells player
                     userFile.seek(0, 2)
                     userFile.write("Invalid input! Row and column must be between 0 and 2.")
-                    userFile.flush()
                     time.sleep(self.waitTime) #lets user read message before moving on 
                     continue #skips rest of loop to restart process
             except (ValueError, SyntaxError):
                 userFile.seek(0, 2)
                 userFile.write("Invalid input! Please enter integers.")
-                userFile.flush()
                 time.sleep(self.waitTime) #lets user read message before moving on 
                 continue #skips rest of loop to restart process
 
-            if not game.addValue(xPos, yPos, currentPlayer): #adds the player input to the board. if the square already has a value, the player is told to retry
+            #adds the player input to the board. if the square already has a value, the player is told to retry
+            if not game.addValue(xPos, yPos, currentPlayer):
                 userFile.write("Square has already been claimed, try again!")
-                userFile.flush()
                 time.sleep(self.waitTime) #lets user read message before moving on 
                 continue #skips rest of loop to restart process
 
@@ -168,7 +168,8 @@ class GameMode:
             winner = game.checkForWin() #output is the player number who has won, or 0 if there is no winner
             if winner == 1 or winner == 2 or game.isFull(): #ends game if someone has won, or if the game is full
                 break
-
+            
+            #switches player
             currentPlayer += 1
             if currentPlayer > 2: #eliminates possible weirdness if value is over 2 (but gives player 1 an advantage :)
                 currentPlayer = 1
@@ -193,5 +194,5 @@ if __name__ == "__main__":
     userFile = open("TicTacToe.txt", "w")
     userFile.write('This is a TicTacToe game.\nAll inputs should be done on this file, not the terminal.\nWhen inputting values, click the end of the very last line and then write your values.\nYour values should be written in the form row-column like "00" where the first number is the row numnber, in the range of 0-2, and the sceond is the column.\nAfter you have typed your input, click "Enter" and then save the file (Ctrl/Command + S).\nHave fun and don\'t cheat!\n\n')
     userFile.seek(0, 0)
-    userFile.close()
-    gamez.playGameOntoFile(8)
+    userFile.close() #close file as to not mess up the game
+    gamez.playGameOntoFile(8) #plays the game. line 8 so it does not write on top of the instructions
