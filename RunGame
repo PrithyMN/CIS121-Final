@@ -163,7 +163,7 @@ class GameMode:
 if __name__ == "__main__":
     gamez = GameMode()
     userFile = open("TicTacToe.txt", "w")
-    userFile.write('This is a TicTacToe game.\nAll inputs should be done on this file, not the terminal.\nWhen inputting values, click the end of the very last line and then write your values.\nYour values should be written in the form row-column like "00" where the first number is the row numnber, in the range of 0-2, and the sceond is the column.\nAfter you have typed your input, click "Enter" and then save the file (Ctrl/Command + S).\nHave fun and don\'t cheat!\n\n')
+    userFile.write('This is a TicTacToe game.\nAll inputs should be done on this file, not the terminal.\nWhen inputting values, click the end of the very last line and then write your values.\nYour values should be written in the form row-column like "00" where the first number is the row number, in the range of 0-2, and the second is the column.\nAfter you have typed your input, click "Enter" and then save the file (Ctrl/Command + S).\nHave fun and don\'t cheat!\n\n')
     userFile.seek(0, 0)
     userFile.close() #close file as to not mess up the game
     gamez.playGame(8) #plays the game. line 8 so it does not write on top of the instructions
