@@ -121,17 +121,20 @@ class GameMode:
                 if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
                     userFile.seek(0, 2) #sets cursor to end of the file
                     userFile.write("Invalid input! Row and column must be between 0 and 2.")
+                    userFile.flush()
                     time.sleep(self.waitTime) #lets user read message before moving on 
                     continue #skips rest of loop to restart process
             except (ValueError, SyntaxError): #ValueError for non-integer values, SyntaxError for weirdness, such as "-" which sometimes would give a SyntaxError
                 userFile.seek(0, 2) #sets cursor to end of the file
                 userFile.write("Invalid input! Please enter integers.")
+                userFile.flush()
                 time.sleep(self.waitTime) #lets user read message before moving on 
                 continue #skips rest of loop to restart process
 
             #adds the player input to the board. if the square already has a value, the player is told to retry
             if not game.addValue(xPos, yPos, currentPlayer):
                 userFile.write("Square has already been claimed, try again!")
+                userFile.flush()
                 time.sleep(self.waitTime) #lets user read message before moving on 
                 continue #skips rest of loop to restart process
 
