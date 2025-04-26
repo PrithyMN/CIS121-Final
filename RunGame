@@ -2,8 +2,8 @@ import math
 import time
 '''
 This game runs fully on the TicTacToe.txt and not the terminal. To get this to work you must save the file after you write your inputs.
-We took this approach as we wanted the inputs and the outputs on the area, instead of inputting on the terminal and then writing on the file.
-This approach came with some weirdness regarding the way file updates are handled in code, and attempting to run user inputs and the same synchronously
+We took this approach as we wanted the inputs and the outputs on the same area, instead of inputting on the terminal and then writing on the file.
+This approach came with some weirdness regarding the way file updates are handled, and attempting to run user inputs synchronously
 '''
 
 class TicTacToe:
@@ -12,9 +12,11 @@ class TicTacToe:
     def __init__(self):
         self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]] #creates 3 by 3 empty board   (Data collection type #1 List)
 
+    #clear board 
     def clearBoard(self):
         self.board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]] #resets board 
 
+    #add value to board
     def addValue(self, xPos: int, yPos: int, playerNum):
         if self.board[xPos][yPos] != 0: #checks if the square has already been claimed
             #print("Square has already been claimed, try again!")
@@ -23,10 +25,11 @@ class TicTacToe:
             self.board[xPos][yPos] = playerNum #square is claimed by player
             return True
 
-    #functions is to make checking for wins easy, private method so this should not be called outside of this class
-    def __checkValuesForWin(self, val1: int, val2: int, val3: int): #double underscore before the name to make it hard to call this function outside of this class defintion
+    #make checking for wins easy, private method so this should not be called outside of this class
+    def __checkValuesForWin(self, val1: int, val2: int, val3: int): #"private" function to make it hard to call outside of the functions in this class
         return val1 == val2 == val3 and val1 != 0
 
+    #checks for win. outputs the winner's number
     def checkForWin(self):
         #checks for wins along rows
         for curRow in self.board: #iterates through each row
@@ -44,82 +47,47 @@ class TicTacToe:
         if self.__checkValuesForWin(self.board[0][2], self.board[1][1], self.board[2][0]): #diagonal 2
             return self.board[0][2] #returns the number of the player who has won the game
 
+    #checks if board is full. returns Boolean for if it is
     def isFull(self):
-        isFull = True #default value to true
-        for row in self.board: #checks all squares for value of 0, which would indicate that the board is not full
+        boardIsFull = True #default value to true
+        #checks all squares for value of 0, which would indicate that the board is not full
+        for row in self.board:
             for cell in row: #Nested Loop
                 if cell == 0: #Selection Statement
-                    isFull = False
+                    boardIsFull = False
                     break
-            if not isFull: #second break so the loop does not continue unnecessarily
+            if not boardIsFull: #second break so the loop does not continue unnecessarily
                 break
-        return isFull
+        return boardIsFull
 
-    def printBoard(self):
-        symbols = {0: '.', 1: 'X', 2: 'O'} #creates dictionary to convert board values to prinable icons (0, 1, 2 -> ., X, O)
-        print("\nCurrent board:")
-        for row in self.board:
-            print(" ".join(symbols[cell] for cell in row))
-        print('') #skips line
-
+    #returns board
     def returnBoard(self):
         return self.board
 
 
 class GameMode:
 
-    symbols = {0: '.', 1: 'X', 2: 'O'} #creates dictionary to convert board values to prinable icons (0, 1, 2 -> ., X, O)
-    waitTime = 4
-    '''
-    def playGame(self):
+    def __init__(self):
+        self.symbolDict = {0: '.', 1: 'X', 2: 'O'} #creates dictionary to convert board values to prinable icons (0, 1, 2 -> ., X, O)
+        self.waitTime = 4 #time where error messages are displayed for users to read, before being erared
+
+    #for playing the actual game, hurray!
+    def playGame(self, startLine: int):
+        #initialize the board, player and file
         game = TicTacToe()
+        game.clearBoard() #clears board if it was previously played on
         currentPlayer = 1
+        userFile = open("TicTacToe.txt", "r+") #r+ so the contents of the file is not deleted
 
-        while True:
-            game.printBoard()
-            print(f"Player {currentPlayer}'s turn (X if 1, O if 2).")
-
-            try: #try statement for proper and improper inputs. Loops until a valid input is entered.
-                xPos = int(input("Enter row (0-2): "))
-                yPos = int(input("Enter column (0-2): "))
-                if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
-                    print("Invalid input! Row and column must be between 0 and 2.") #detects if input is out of range and tells player
-                    continue
-            except ValueError:
-                print("Invalid input! Please enter integers.")
-                continue
-
-            if not game.addValue(xPos, yPos, currentPlayer): #adds the player input to the board. if the square already has a value, the player is told to retry
-                print("Square has already been claimed, try again!")
-                continue #(Data Collection Type #3 Tuple^)
-
-            winner = game.checkForWin()
-            if winner == 1 or winner == 2:
-                game.printBoard()
-                print(f"Player {winner} wins!") #identifies higher value to assign winner and returns result
-                break
-            elif game.isFull():
-                game.printBoard() #calling printBorard function to show the game board
-                print("It's a tie!")
-                break
-
-            currentPlayer += 1
-            if currentPlayer >= 3: #eliminates possible weirdness if value is over 3 (but gives player 1 an advantage :) ?
-                currentPlayer = 1
-    '''
-    def playGameOntoFile(self, startLine: int):
-        game = TicTacToe()
-        game.clearBoard()
-        currentPlayer = 1
-        userFile = open("TicTacToe.txt", "r+") #r+ so it does not delete contents of file but adds to them instead
-
-        userFile.seek(0) #seek command is used to move the position of cursor within a file to specify where to read or write data. This sets cursor to position 0.
-        for _ in range(startLine): #skips to the specified start line
+        #skips to the specified start line and sets position for future truncates
+        userFile.seek(0, 0) #set cursor to begeining of file
+        for curLine in range(startLine):
             userFile.readline()
         truncatePos = userFile.tell() #sets known truncate point for this game
 
+        #loop for running the game. when the game ends, the loop is broken
         while True:
-            #this block of code is meant to only start printing onto the specified line and below. This is to future proof the program
+            #delete contents of where board will print
             userFile.flush() #flush to make sure file it updated
             userFile.seek(truncatePos)
             userFile.truncate() #deletes all data after the cursor
@@ -127,33 +95,36 @@ class GameMode:
             #prints the board onto the file
             userFile.write("Current board:\n")
             for row in game.returnBoard():
-                userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
+                userFile.write(" ".join(self.symbolDict[cell] for cell in row) + '\n')
 
-            userFile.write(f"Player {self.symbols[currentPlayer]}'s turn.\nEnter your move: ")
+            #prompts the player to enter their move
+            userFile.write(f"Player {self.symbolDict[currentPlayer]}'s turn.\nEnter your move: ")
 
-            #while loop to check for user inputs on the file
+            #loop to check for user inputs on the file that match the instructions
             while True:
                 userFile.flush() #flush to make sure file is updated
-                time.sleep(0.1)
+                time.sleep(0.1) #delay to prevent CPU overuse and file update delay read errors
                 userFile.seek(0, 2) #sets cursor to end of the file
 
-                if userFile.tell() >= 1: #accounts for weird error where file will read as empty; checks to make sure the file has content to proceed
+                if userFile.tell() >= 1: #accounts for error where file will read as empty; checks to make sure the file has content to proceed
                     userFile.seek(userFile.tell() - 1)
                     if userFile.read(1) == '\n': #checks if last value is "Enter" key
-                        break
+                        break #stops waiting for user input and moves on to processing
 
+            #reads the user input and then accounts for user input error so they can retry
             try:
-                userFile.seek(0, 2)
+                userFile.seek(0, 2) #sets cursor to end of the file
                 userFile.seek(userFile.tell() - 4) #goes to 4 values before end of file, 4 because there is "00\r\n" for example
                 xPos = int(userFile.read(1))
                 yPos = int(userFile.read(1))
-                if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2: #detects if input is out of range and tells player
-                    userFile.seek(0, 2)
+                #detects if input is out of range and tells player
+                if xPos < 0 or xPos > 2 or yPos < 0 or yPos > 2:
+                    userFile.seek(0, 2) #sets cursor to end of the file
                     userFile.write("Invalid input! Row and column must be between 0 and 2.")
                     time.sleep(self.waitTime) #lets user read message before moving on 
                     continue #skips rest of loop to restart process
-            except (ValueError, SyntaxError):
-                userFile.seek(0, 2)
+            except (ValueError, SyntaxError): #ValueError for non-integer values, SyntaxError for weirdness, such as "-" which sometimes would give a SyntaxError
+                userFile.seek(0, 2) #sets cursor to end of the file
                 userFile.write("Invalid input! Please enter integers.")
                 time.sleep(self.waitTime) #lets user read message before moving on 
                 continue #skips rest of loop to restart process
@@ -164,7 +135,7 @@ class GameMode:
                 time.sleep(self.waitTime) #lets user read message before moving on 
                 continue #skips rest of loop to restart process
 
-            #block to check and output winner
+            #check and output winner
             winner = game.checkForWin() #output is the player number who has won, or 0 if there is no winner
             if winner == 1 or winner == 2 or game.isFull(): #ends game if someone has won, or if the game is full
                 break
@@ -179,11 +150,11 @@ class GameMode:
         userFile.truncate() #deletes all data after the cursor
         userFile.write("Current board:\n")
         for row in game.returnBoard():
-            userFile.write(" ".join(self.symbols[cell] for cell in row) + '\n')
+            userFile.write(" ".join(self.symbolDict[cell] for cell in row) + '\n')
             
-        #writes the winner or if it is a tie
+        #prints the winner or a tie
         if winner == 1 or winner == 2:
-                userFile.write(f"Player {self.symbols[currentPlayer]} wins!")
+                userFile.write(f"Player {self.symbolDict[currentPlayer]} wins!")
         elif game.isFull():
             userFile.write("It's a tie!")
 
@@ -195,4 +166,5 @@ if __name__ == "__main__":
     userFile.write('This is a TicTacToe game.\nAll inputs should be done on this file, not the terminal.\nWhen inputting values, click the end of the very last line and then write your values.\nYour values should be written in the form row-column like "00" where the first number is the row numnber, in the range of 0-2, and the sceond is the column.\nAfter you have typed your input, click "Enter" and then save the file (Ctrl/Command + S).\nHave fun and don\'t cheat!\n\n')
     userFile.seek(0, 0)
     userFile.close() #close file as to not mess up the game
-    gamez.playGameOntoFile(8) #plays the game. line 8 so it does not write on top of the instructions
+    gamez.playGame(8) #plays the game. line 8 so it does not write on top of the instructions
+
