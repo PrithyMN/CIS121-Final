@@ -1,13 +1,1 @@
-This is a TicTacToe game.
-All inputs should be done on this file, not the terminal.
-When inputting values, click the end of the very last line and then write your values.
-Your values should be written in the form row-column like "00" where the first number is the row number, in the range of 0-2, and the second is the column.
-After you have typed your input, click "Enter" and then save the file (Ctrl/Command + S).
-Have fun and don't cheat!
-
-Current board:
-. . .
-. . .
-. . .
-Player X's turn.
-Enter your move: 
+ 
