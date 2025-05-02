@@ -51,6 +51,7 @@ class TicTacToe:
     def isFull(self):
         boardIsFull = True #default value to true
         #checks all squares for value of 0, which would indicate that the board is not full
+        
         for row in self.board:
             for cell in row: #Nested Loop
                 if cell == 0: #Selection Statement
