@@ -69,7 +69,7 @@ class GameMode:
 
     def __init__(self):
         self.symbolDict = {0: '.', 1: 'X', 2: 'O'} #creates dictionary to convert board values to prinable icons (0, 1, 2 -> ., X, O)
-        self.waitTime = 4 #time where error messages are displayed for users to read, before being erared
+        self.waitTime = 4 #time where error messages are displayed for users to read, before being erased
 
     #for playing the actual game, hurray!
     def playGame(self, startLine: int):
